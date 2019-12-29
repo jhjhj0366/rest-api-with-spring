@@ -106,4 +106,27 @@ public class EventControllerTests {
                 .andExpect(status().isBadRequest())
         ;
     }
+
+    // 받아야 하는 값들이 비어있을 때, Bas Request 처리
+    @Test
+    public void createEvent_Bad_Request_Wrong_Input() throws Exception {
+        EventDto eventDto = EventDto.builder()
+                .name("spirng")
+                .description("Spring")
+                .beginEnrollmentDateTime(LocalDateTime.of(2020, 12, 29, 16, 30))
+                .closeEnrollmentDateTime(LocalDateTime.of(2019, 12, 29, 16, 30))
+                .beginEventDateTime(LocalDateTime.of(2019, 12, 29, 16, 30))
+                .endEventDateTime(LocalDateTime.of(2018, 12, 29, 16, 30))
+                .basePrice(1000)
+                .maxPrice(200)
+                .limitOfEnrollment(100)
+                .location("강남역 D2 스타트업 팩토리")
+                .build();
+
+        this.mockMvc.perform(post("/api/events")
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .content(this.objectMapper.writeValueAsString(eventDto)))
+                .andExpect(status().isBadRequest())
+        ;
+    }
 }
