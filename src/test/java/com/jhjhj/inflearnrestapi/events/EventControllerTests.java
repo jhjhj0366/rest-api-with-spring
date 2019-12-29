@@ -5,10 +5,8 @@ import com.jhjhj.inflearnrestapi.common.TestDescription;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.hateoas.MediaTypes;
@@ -97,7 +95,6 @@ public class EventControllerTests {
         ;
     }
 
-    // 받아야 하는 값들이 비어있을 때, Bas Request 처리
     @Test
     @TestDescription("입력값이 비어있는 경우에 에러가 발생하는 테스트")
     public void createEvent_Bad_Request_Empty_Input() throws Exception {
@@ -110,7 +107,6 @@ public class EventControllerTests {
         ;
     }
 
-    // 받아야 하는 값들이 비어있을 때, Bas Request 처리
     @Test
     @TestDescription("입력값이 잘못된 경우, 발생하는 이벤트")
     public void createEvent_Bad_Request_Wrong_Input() throws Exception {
@@ -130,7 +126,11 @@ public class EventControllerTests {
         this.mockMvc.perform(post("/api/events")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(this.objectMapper.writeValueAsString(eventDto)))
+                .andDo(print())
                 .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$[0].objectName").exists())
+                .andExpect(jsonPath("$[0].defaultMessage").exists())
+                .andExpect(jsonPath("$[0].rejectedValue").exists())
         ;
     }
 }
