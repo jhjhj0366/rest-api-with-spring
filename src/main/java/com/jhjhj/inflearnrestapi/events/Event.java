@@ -2,6 +2,7 @@ package com.jhjhj.inflearnrestapi.events;
 
 import lombok.*;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Builder
@@ -9,10 +10,10 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Getter @Setter
 @EqualsAndHashCode(of="id")         // entity 간의 연관관계가 있을 떄, stackoverflow 를 방지
-
-@Data
+@Entity
 public class Event {
 
+    @Id @GeneratedValue
     private Integer id;
     private String name;
     private String description;
@@ -26,6 +27,7 @@ public class Event {
     private int limitOfEnrollment;
     private boolean offline;
     private boolean free;
+    @Enumerated(EnumType.STRING)
     private EventStatus eventStatus;
 
 }
